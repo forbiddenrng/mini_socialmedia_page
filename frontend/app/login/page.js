@@ -22,7 +22,7 @@ export default function Login() {
     })
 
     if(response.ok){
-      router.push('/')
+      router.push('/home')
     }else{
       alert("Niepoprawne logowanie")
     }
