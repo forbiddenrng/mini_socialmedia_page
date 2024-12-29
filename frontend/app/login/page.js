@@ -13,15 +13,20 @@ export default function Login() {
 
   const handleSubmit = async (e) =>{
     e.preventDefault()
-
+    let responseOk = false
     const response = await fetch('http://localhost:4000/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({email, password}),
       credentials: "include"
+    }).then(res => {
+      responseOk = res.ok
+      return res.json()
+    }).then(res => {
+      sessionStorage.setItem('token', res.token)
     })
 
-    if(response.ok){
+    if(responseOk){
       router.push('/home')
     }else{
       alert("Niepoprawne logowanie")
