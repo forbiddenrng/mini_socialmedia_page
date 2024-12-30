@@ -45,7 +45,7 @@ const posts = [
   {id: 3, title: "Tytuł posta 3", ownerId: 1, createDate: "2024-12-27", modifyDate: null, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"},
 
 ]
-
+let lastPostId = posts.length
 //get posts endpoint
 
 app.get('/api/posts', (req, res) => {
@@ -72,6 +72,28 @@ app.get('/api/user/posts', authenticateToken, (req, res) =>{
   const userPosts = posts.filter(post => post.ownerId === userId).map(post => post.id)
 
   res.json({posts: userPosts})
+})
+
+//add post endpoint
+
+app.post('/api/post/add', authenticateToken, (req, res) => {
+  const {title, content} = req.body
+
+  if (!title || !content){
+    res.status(400).json({message: "Niepopawny request"})
+  }
+  lastPostId++;
+  const newPost = {
+    id: lastPostId,
+    title: title,
+    createDate: new Date().toISOString().slice(0,10),
+    modifyDate: null,
+    ownerId: req.user.id,
+    content: content,
+  }
+
+  posts.push(newPost)
+  res.status(201).json({message: "Utworzono nowy post"})
 })
 
 //edit post endpoint

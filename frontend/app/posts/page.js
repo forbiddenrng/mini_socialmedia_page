@@ -5,6 +5,8 @@ export default function Posts() {
   const [posts, setPosts] = useState([])
   const [userPosts, setUserPosts] = useState([])
   const [token, setToken] = useState()
+  const [newPostTitle, setNewPostTitle] = useState('')
+  const [newPostContent, setNewPostContent] = useState('')
 
 
   const getPosts = async () => {
@@ -36,11 +38,42 @@ export default function Posts() {
       getUserPosts()
     }
   }, [token])
+
+  const handleAddPost = async () => {
+    const request = await fetch('http://localhost:4000/api/post/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        title: newPostTitle,
+        content: newPostContent
+      })
+    }).then(res => {
+      if(res.ok){
+        alert("Dodano post")
+      }
+    }).catch(e => {
+      alert("Nie udało się dodać posta")
+    }).finally(() => {
+      //clear inputs
+      setNewPostContent('')
+      setNewPostTitle('')
+    })
+  }
+
   // const posts = getPosts()
   // const userPosts = getUserPosts()
   //console.log(userPosts);
   return (
     <div className="posts_section">
+    <div className="add_post">
+      <input type="text" id="add_post_title" placeholder="Tytuł posta" value={newPostTitle} onChange={(e) => setNewPostTitle(e.target.value)}></input>
+      <textarea type="text" id="add_post_contet" placeholder="Napisz cos..." value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)}></textarea>
+      <button id="add_post_button" onClick={() => handleAddPost()}>Opublikuj</button>
+    </div>
     <h1>Posty użytkowników</h1>
     <div className="posts_container">
      {posts.map(post => (
