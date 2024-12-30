@@ -2,9 +2,11 @@
 import Post from "../components/Post";
 import { useEffect, useState } from "react";
 export default function Posts() {
-  const token = sessionStorage.getItem('token')
   const [posts, setPosts] = useState([])
   const [userPosts, setUserPosts] = useState([])
+  const [token, setToken] = useState()
+
+
   const getPosts = async () => {
     const response = await fetch('http://localhost:4000/api/posts').then(res => res.json())
     setPosts(response.posts)
@@ -23,9 +25,17 @@ export default function Posts() {
   //console.log(posts);
 
   useEffect(() => {
-    getPosts()
-    getUserPosts()
+    if (typeof window !== 'undefined'){
+      setToken(sessionStorage.getItem('token'))
+    }
   }, [])
+  useEffect(() => {
+    if (token){
+
+      getPosts()
+      getUserPosts()
+    }
+  }, [token])
   // const posts = getPosts()
   // const userPosts = getUserPosts()
   //console.log(userPosts);
@@ -40,6 +50,7 @@ export default function Posts() {
       // modifyDate={post.modifyDate}
       // content={post.content}
       {...post}
+      userPosts={userPosts}
       />
      ))}
      </div>

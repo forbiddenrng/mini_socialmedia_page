@@ -74,6 +74,35 @@ app.get('/api/user/posts', authenticateToken, (req, res) =>{
   res.json({posts: userPosts})
 })
 
+//edit post endpoint
+
+app.put('/api/post/edit', authenticateToken, (req, res) => {
+  const {newContent, newTitle, postId} = req.body
+
+  console.log(req.body);
+
+  console.log(newContent, newTitle, postId);
+  const post = posts.find(post => post.id === postId)
+
+  if(post){
+    post.title = newTitle
+    post.content = newContent
+    post.modifyDate = new Date().toISOString().slice(0,10)
+  }
+  return res.status(200).json({message: "Zmodyfikowano zawartość posta"})
+})
+
+//delete post endpoint
+app.delete('/api/post/delete', authenticateToken, (req, res) => {
+  const {postId} = req.body
+  const postIdx = posts.findIndex(post => post.id === postId)
+  if(postIdx !== -1){
+    posts.splice(postIdx, 1)
+    return res.status(200).json({message: "Post usunięty pomyślnie"})
+  }else{
+    return res.status(404).json({message: "Nie znaleziono posta"})
+  }
+})
 
 
 //login endpoint
