@@ -5,6 +5,11 @@ body {
 
 }
 
+:root{
+  --vivid-sky-blue: #32CBFF;
+  --picton-blue: #00A5E0;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

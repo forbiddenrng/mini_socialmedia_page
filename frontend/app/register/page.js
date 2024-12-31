@@ -8,7 +8,7 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import '../globals.css'
 import '../style/login.css'
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayError, setDisplayError] = useState(false)
@@ -40,9 +40,9 @@ export default function Login() {
       alert("Niepoprawne logowanie")
     }
   }
-  const handleSignUp = () => {
+  const handleSignIn = () => {
     // console.log("sign up");
-    router.push('/register')
+    router.push('/login')
   }
   useEffect(() => {
     setDisplayError(false)
@@ -50,7 +50,7 @@ export default function Login() {
   return (
     <div className='login_page'>
       <div className='login_wrapper'>
-      <h3>Login</h3>
+      <h3>Sign up</h3>
       <form onSubmit={handleSubmit}>
       <div className='email'>
       <label>
@@ -74,10 +74,10 @@ export default function Login() {
         />
       </label>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Sign up</button>
       </form>
       <div className='sign_up'>
-        <span onClick={() => handleSignUp()}>Sign up</span>
+        <span onClick={() => handleSignIn()}>Sign in</span>
       </div>
       {displayError && <span className='form_error'>Email ani hasło nie mogą być puste</span>}
       </div>

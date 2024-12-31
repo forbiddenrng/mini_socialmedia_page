@@ -9,7 +9,7 @@ export function middleware(req) {
   const token = req.cookies.get('token')?.value
 
   console.log("middleware");
-  if (!token && req.nextUrl.pathname !== '/login') {
+  if (!token && req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/register') {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
