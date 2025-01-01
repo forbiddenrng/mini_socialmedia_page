@@ -1,0 +1,35 @@
+h1.welcome{
+  text-align: center;
+  margin-top: 20px;
+}
+.user_info{
+  width: 600px;
+  border: 2px solid var(--picton-blue);
+  padding: 30px;
+  margin: 30px auto;
+}
+.info_box{
+  display: flex;
+  margin-top: 10px;
+}
+
+.info_box div{
+  flex-basis: 40%;
+  align-self: flex-start;
+}
+.info_box .info_title{
+  font-weight: bold;
+}
+.info_box .info_content{
+  color: gray;
+}
+.info_box div.edit_btn{
+  flex-basis: 20%;
+}
+
+.info_box button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
