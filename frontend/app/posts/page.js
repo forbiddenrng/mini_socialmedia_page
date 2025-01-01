@@ -1,6 +1,8 @@
 "use client"
 import Post from "../components/Post";
 import { useEffect, useState } from "react";
+import "../style/posts.css"
+
 export default function Posts() {
   const [posts, setPosts] = useState([])
   const [userPosts, setUserPosts] = useState([])
@@ -68,7 +70,7 @@ export default function Posts() {
   // const userPosts = getUserPosts()
   //console.log(userPosts);
   return (
-    <div className="posts_section">
+    <div>
     <div className="add_post">
       <input type="text" id="add_post_title" placeholder="Tytuł posta" value={newPostTitle} onChange={(e) => setNewPostTitle(e.target.value)}></input>
       <textarea type="text" id="add_post_contet" placeholder="Napisz cos..." value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)}></textarea>

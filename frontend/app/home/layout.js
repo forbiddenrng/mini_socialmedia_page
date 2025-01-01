@@ -2,11 +2,9 @@ import "../globals.css";
 import Navigation from "../components/Navigation"
 export default function HomeLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
+      <div className="app">
        <Navigation/>
         {children}
-      </body>
-    </html>
+      </div>
   );
 }

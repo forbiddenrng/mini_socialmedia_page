@@ -1,6 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
+
 export default function Post({title, createDate, modifyDate, content, ownerId, userPosts, id}){
   const [editMode, setEditMode] = useState(false)
   const [token, setToken] = useState()
@@ -38,10 +41,10 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
     <div className="post">
       <h3>{title}</h3>
       <span>Post użytkownika: {ownerId}</span>
-      {modifyDate === null ? <span>Data posta:{createDate}</span> : <span>Data edycji:{modifyDate}</span>}
+      {modifyDate === null ? <span>{createDate}</span> : <span>Edytowano {modifyDate}</span>}
       <p>{content}</p>
-      {userPosts.includes(ownerId) && <button onClick={() => handleDeletePost()}>Usuń</button>}
-      {userPosts.includes(ownerId) && <button onClick={() => handleEditPost()}>Edytuj</button>}
+      {userPosts.includes(ownerId) && <button onClick={() => handleDeletePost()}><MdDelete/></button>}
+      {userPosts.includes(ownerId) && <button onClick={() => handleEditPost()}><MdEdit/></button>}
       {editMode && <EditPost title={title} content={content} changeEditMode={setEditMode} id={id}/>}
     </div>
   )

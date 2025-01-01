@@ -1,7 +1,7 @@
 import Navigation from "../components/Navigation";
 export default function PofileLayout({ children }) {
   return (
-    <div>
+    <div className="app">
       <Navigation/>
       {children}
     </div>

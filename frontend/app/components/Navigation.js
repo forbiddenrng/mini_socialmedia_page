@@ -1,5 +1,9 @@
 "use client"
 import Link from "next/link";
+import { CiMail } from "react-icons/ci";
+import { CiChat1 } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
+import { MdLogout } from "react-icons/md";
 
 export default function Navigation(){
   const logout = async () => {
@@ -18,12 +22,13 @@ export default function Navigation(){
   }
   return(
     <nav>
+      <p>Portal Muzyczny</p>
       <ul>
-        <li><Link href="/posts">Posty</Link></li>
-        <li><Link href="/chat">Czat</Link></li>
-        <li><Link href="/profile">Profil</Link></li>
+        <li><CiMail/><Link href="/posts">Posty</Link></li>
+        <li><CiChat1/><Link href="/chat">Czat</Link></li>
+        <li><CgProfile/><Link href="/profile">Profil</Link></li>
       </ul>
-      <button onClick={logout}>Wyloguj</button>
+      <button className="logout_btn" onClick={logout}><MdLogout /> <span>Wyloguj</span></button>
     </nav>
   )
 }

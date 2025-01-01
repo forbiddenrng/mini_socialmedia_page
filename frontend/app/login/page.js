@@ -11,14 +11,15 @@ import '../style/login.css'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [displayError, setDisplayError] = useState(false)
+  // const [displayError, setDisplayError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const router = useRouter()
 
   const handleSubmit = async (e) =>{
     e.preventDefault()
     if(email === "" || password===""){
-      setDisplayError(true)
+      setErrorMessage('Email i hasło muszą być podane')
       return 
     }
     let responseOk = false
@@ -37,7 +38,7 @@ export default function Login() {
     if(responseOk){
       router.push('/home')
     }else{
-      alert("Niepoprawne logowanie")
+      setErrorMessage('Niepoprawne dane logowania')
     }
   }
   const handleSignUp = () => {
@@ -45,7 +46,7 @@ export default function Login() {
     router.push('/register')
   }
   useEffect(() => {
-    setDisplayError(false)
+    setErrorMessage('')
   }, [email, password])
   return (
     <div className='login_page'>
@@ -79,7 +80,7 @@ export default function Login() {
       <div className='sign_up'>
         <span onClick={() => handleSignUp()}>Sign up</span>
       </div>
-      {displayError && <span className='form_error'>Email ani hasło nie mogą być puste</span>}
+      {errorMessage !== '' && <span className='form_error'>{errorMessage}</span>}
       </div>
     </div>
   );

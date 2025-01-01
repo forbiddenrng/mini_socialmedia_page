@@ -8,10 +8,74 @@ body {
 :root{
   --vivid-sky-blue: #32CBFF;
   --picton-blue: #00A5E0;
+  --nav-background: #11101d;
 }
+
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+.app{
+  display: flex;
+}
+
+.app nav {
+  min-width: 300px;
+  min-height: 100vh;
+  background-color: var(--nav-background);
+  padding: 20px;
+}
+.app>div{
+  flex-grow: 1;
+}
+.app nav p{
+  text-align: center;
+  margin: 10px 0;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.app nav li{
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color .3s linear;
+}
+.app nav li a{
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  margin-left: 10px;
+}
+.app nav li:hover {
+  background-color: white;
+  color: var(--nav-background)
+}
+.app nav li:hover a{
+  color: var(--nav-background)
+}
+.app .logout_btn{
+  display: flex;
+  align-items: center;
+  /* gap: 10px; */
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.app .logout_btn:hover{
+  background-color: #fff;
+  color: var(--nav-background)
+}
+.app .logout_btn span{
+  margin-left: 10px;
 }
