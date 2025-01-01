@@ -4,10 +4,11 @@ import "../style/profile.css"
 import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export default function Profile() {
+  //state for edit management
   const [editName, setEditName] = useState(false)
   const [nameValue, setNameValue] = useState('')
 
@@ -22,6 +23,50 @@ export default function Profile() {
 
   const [editInfo, setEditInfo] = useState(false)
   const [infoValue, setInfoValue] = useState('')
+
+  //state for token
+  const [token, setToken] = useState()
+
+  //state for user info
+  const [username, setUsername] = useState('Brak danych')
+  const [city, setCity] = useState('Brak danych')
+  const [favGenre, setFavGenre] = useState('Brak danych')
+  const [instrument, setInstrument] = useState('Brak danych')
+  const [info, setInfo] = useState('Brak danych')
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined'){
+      setToken(sessionStorage.getItem('token'))
+    }
+  }, [])
+  
+  const saveUserInfo = ({userData}) => {
+    setUsername(userData.name)
+    setCity(userData.city)
+    setFavGenre(userData.favGenre)
+    setInstrument(userData.instrument)
+    setInfo(userData.info)
+  }
+
+  const getUserInfo = async () => {
+    const response = fetch('http://localhost:4000/api/user/info', {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      credentials: "include"
+    }).then(res => res.json())
+    .then(res => {
+      saveUserInfo(res)
+    }).catch(e => {
+      alert("Nie udało się załadować danych")
+    })
+  }
+  useEffect(() => {
+    if(token){
+      getUserInfo()
+    }
+  }, [token])
 
   const handleConfirmEdit = (edit) => {
     if(edit === 'name'){
@@ -46,7 +91,7 @@ export default function Profile() {
       <div className="info_box">
         <div className="info_title">Nazwa:</div>
         <div className="info_content">
-          {editName ? <input className="edit_input" onChange={(e) => setNameValue(e.target.value)} value={nameValue}></input> : <span>Nazwa użytkownika</span>}
+          {editName ? <input className="edit_input" onChange={(e) => setNameValue(e.target.value)} value={nameValue}></input> : <span>{username}</span>}
         </div>
         <div className="edit_btn">
           {!editName ? <button onClick={() => setEditName(true)}><MdEdit/></button> : 
@@ -60,7 +105,7 @@ export default function Profile() {
       <div className="info_box">
         <div className="info_title">Miasto:</div>
         <div className="info_content">
-        {editCity ? <input className="edit_input" onChange={(e) => setCityValue(e.target.value)} value={cityValue}></input> : <span>Miasto użytkownika</span>}
+        {editCity ? <input className="edit_input" onChange={(e) => setCityValue(e.target.value)} value={cityValue}></input> : <span>{city}</span>}
         </div>
         <div className="edit_btn">
           {!editCity ? <button onClick={() => setEditCity(true)}><MdEdit/></button> : 
@@ -75,7 +120,7 @@ export default function Profile() {
       <div className="info_box">
         <div className="info_title">Ulubiony gatunek</div>
         <div className="info_content">
-          {editGenre ? <input className="edit_input" onChange={(e) => setGenreValue(e.target.value)} value={genreValue}></input> : <span>Gatunek użytkownika</span>}
+          {editGenre ? <input className="edit_input" onChange={(e) => setGenreValue(e.target.value)} value={genreValue}></input> : <span>{favGenre}</span>}
         </div>    
         <div className="edit_btn">
           {!editGenre ? <button onClick={() => setEditGenre(true)}><MdEdit/></button> : 
@@ -89,7 +134,7 @@ export default function Profile() {
       <div className="info_box">
         <div className="info_title">Instrument: </div>
         <div className="info_content">
-         {editInstrument ? <input className="edit_input" onChange={(e) => setInstrumentValue(e.target.value)} value={instrumentValue}></input> : <span>Instument użytkownika</span>}
+         {editInstrument ? <input className="edit_input" onChange={(e) => setInstrumentValue(e.target.value)} value={instrumentValue}></input> : <span>{instrument}</span>}
         </div>
         <div className="edit_btn">
           {!editInstrument ? <button onClick={() => setEditInstrument(true)}><MdEdit/></button> : 
@@ -103,7 +148,7 @@ export default function Profile() {
       <div className="info_box">
         <div className="info_title">Informacje: </div>
         <div className="info_content">
-        {editInfo ? <input className="edit_input" onChange={(e) => setInfoValue(e.target.value)} value={infoValue}></input> : <span>Informacje użytkownika</span>}
+        {editInfo ? <input className="edit_input" onChange={(e) => setInfoValue(e.target.value)} value={infoValue}></input> : <span>{info}</span>}
         </div>
         <div className="edit_btn">
           {!editInfo ? <button onClick={() => setEditInfo(true)}><MdEdit/></button> : 

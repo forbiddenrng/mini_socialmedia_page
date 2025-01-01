@@ -34,7 +34,7 @@ function authenticateToken(req, res, next){
 
 //baza danych użytkowników
 const users = [
-  {id: 1, email: 'user@email.com', password: 'user1'},
+  {id: 1, email: 'user@email.com', password: 'user1', name:"username1", city:"Gdynia", favGenre: "Rock", instrument: "Gitara", info: "Jestem fanem dobrego rocka."},
   {id: 2, email: 'user2@email.com', password: 'user2'},
   {id: 3, email: 'user3@email.com', password: 'user3'},
 ]
@@ -73,6 +73,28 @@ app.get('/api/user/posts', authenticateToken, (req, res) =>{
 
   res.json({posts: userPosts})
 })
+
+// get user info endpoint
+app.get('/api/user/info', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const user = users.find(u => u.id === userID)
+
+  if(user){
+    const userData = {
+      email: user.email,
+      password: user.password,
+      name: user.name,
+      city: user.city,
+      favGenre: user.favGenre,
+      instrument: user.instrument,
+      info: user.info
+    }
+    return res.status(200).json({userData})
+  }
+
+})
+
+
 
 //add post endpoint
 
