@@ -165,7 +165,7 @@ app.put('/api/user/email', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newEmail){
     user.email = newEmail
-    return res.status(200).json({message: "Zaktualizowano email"})
+    return res.status(200).json({message: "Zaktualizowano email", newContent: newEmail})
   }
   res.status(400).json({message: "Nie podano parametru"})
 })
@@ -177,7 +177,7 @@ app.put('/api/user/password', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newPassword){
     user.password = newPassword
-    return res.status(200).json({message: "Zaktualizowano hasło"})
+    return res.status(200).json({message: "Zaktualizowano hasło", newContent: newPassword})
   }
   res.status(400).json({message: "Nie podano parametru"})
 })

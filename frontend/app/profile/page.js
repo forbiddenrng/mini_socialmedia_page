@@ -270,14 +270,53 @@ function UserSettings(){
       getUserInfo()
     }
   }, [token])
+
+  const clearInuput = (inputName) => {
+    if (inputName === 'email') return setEmailValue('')
+    else if (inputName === 'password') return setPasswordValue('')
+  }
+
+  const setNewContent = (endpoint, newContent) => {
+    if (endpoint === 'email') return setEmail(newContent)
+    else if(endpoint === 'password') return setPassword(newContent)
+  }
+
   
+  const sendEditReqest = async (endpoint, key, value) => {
+    const bodyObj = {
+      [key]: value
+    }
+    const request = fetch(`http://localhost:4000/api/user/${endpoint}`, {
+      method: "PUT",
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      credentials: "include",
+      body:JSON.stringify(bodyObj)
+    }).then(res => {
+      if(res.ok) return res.json()
+    }).then(res => {
+      setNewContent(endpoint, res.newContent)
+    })
+      .catch(e => alert("Wystąpił błąd poczas edytowania"))
+      .finally(() => {
+        //clear input
+        clearInuput(endpoint)
+      })
+  }
 
-
+  const verifyEmail = email => email.includes('@') && !email.includes(' ') && email.length > 0
+  const verifyPassword = password => password.length > 0
   const handleConfirmEdit = (edit) => {
     if(edit==='email'){
+      if(!verifyEmail(emailValue)) return alert("Proszę podać poprawną wartość")
       setEditEmail(false)
+      sendEditReqest('email', 'newEmail', emailValue)
     }else if(edit==='password'){
+      if(!verifyPassword(passwordValue)) return alert("Proszę podać poprawne hasło")
       setEditPassword(false)
+      sendEditReqest('password', 'newPassword', passwordValue)
     }
   }
 
