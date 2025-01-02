@@ -69,17 +69,70 @@ export default function Profile() {
     }
   }, [token])
 
+  const clearInuput = (inputName) => {
+    if (inputName === 'name') return setNameValue('')
+    else if (inputName === 'city') return setCityValue('')
+    else if (inputName === 'genre') return setGenreValue('')
+    else if (inputName === 'instrument') return setInstrumentValue('')
+    else if (inputName === 'info') return setInfoValue('')
+  }
+
+  const setNewContent = (endpoint, newContent) => {
+    if (endpoint === 'name') return setUsername(newContent)
+    else if(endpoint === 'city') return setCity(newContent)
+    else if(endpoint === 'genre') return setFavGenre(newContent)
+    else if(endpoint === 'instrument') return setInstrument(newContent)
+    else if(endpoint === 'info') return setInfo(newContent)
+
+  }
+
+  const sendEditReqest = async (endpoint, key, value) => {
+    const bodyObj = {
+      [key]: value
+    }
+    const request = fetch(`http://localhost:4000/api/user/${endpoint}`, {
+      method: "PUT",
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      credentials: "include",
+      body:JSON.stringify(bodyObj)
+    }).then(res => {
+      if(res.ok) return res.json()
+    }).then(res => {
+      setNewContent(endpoint, res.newContent)
+    })
+      .catch(e => alert("Wystąpił błąd poczas edytowania"))
+      .finally(() => {
+        //clear input
+        clearInuput(endpoint)
+      })
+  }
+  //check if there are spaces in input
+  const veryfiyInput = str => !str.includes(' ') && str.length >0
+
   const handleConfirmEdit = (edit) => {
     if(edit === 'name'){
+      if(!veryfiyInput(nameValue)) return alert("Proszę podać nową wartość")
       setEditName(false)
+      sendEditReqest('name', 'newUsername', nameValue)
     }else if(edit==='city'){
+      if(!veryfiyInput(cityValue)) return alert("Proszę podać nową wartość")
       setEditCity(false)
+      sendEditReqest('city', 'newCity', cityValue)
     }else if(edit==='genre'){
+      if(genreValue === "") return alert("Proszę podać nową wartość")
       setEditGenre(false)
+      sendEditReqest('genre', 'newGenre', genreValue)
     } else if(edit==='instrument'){
+      if(instrumentValue === "") return alert("Proszę podać poprawną wartość")
       setEditInstrument(false)
+      sendEditReqest('instrument', 'newInstrument', instrumentValue)
     } else if(edit==='info'){
+      if(infoValue === "") return alert("Proszę podać poprawną wartość")
       setEditInfo(false)
+      sendEditReqest('info', 'newInfo', infoValue)
     }
   }
 

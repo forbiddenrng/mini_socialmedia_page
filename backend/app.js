@@ -91,8 +91,97 @@ app.get('/api/user/info', authenticateToken, (req, res) => {
     }
     return res.status(200).json({userData})
   }
-
 })
+//update user name
+app.put('/api/user/name', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newUsername} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newUsername){
+    user.name = newUsername
+    return res.status(200).json({message: "Zaktualizowano nazwę", newContent: newUsername})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
+//update user city
+app.put('/api/user/city', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newCity} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newCity){
+    user.city = newCity
+    return res.status(200).json({message: "Zaktualizowano miasto", newContent: newCity})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
+//update user city
+app.put('/api/user/genre', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newGenre} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newGenre){
+    user.favGenre = newGenre
+    return res.status(200).json({message: "Zaktualizowano gatunek muzyczny", newContent: newGenre})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
+//update user instrument
+app.put('/api/user/instrument', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newInstrument} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newInstrument){
+    user.instrument = newInstrument
+    return res.status(200).json({message: "Zaktualizowano instrument", newContent: newInstrument})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
+//update user info
+app.put('/api/user/info', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newInfo} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newInfo){
+    user.info = newInfo
+    return res.status(200).json({message: "Zaktualizowano informacje", newContent: newInfo})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
+//update user email
+app.put('/api/user/email', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newEmail} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newEmail){
+    user.email = newEmail
+    return res.status(200).json({message: "Zaktualizowano email"})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+//update user password
+app.put('/api/user/password', authenticateToken, (req, res) => {
+  const userID = req.user.id
+  const {newPassword} = req.body
+
+  const user = users.find(user => user.id === userID)
+  if (newPassword){
+    user.password = newPassword
+    return res.status(200).json({message: "Zaktualizowano hasło"})
+  }
+  res.status(400).json({message: "Nie podano parametru"})
+})
+
 
 
 
