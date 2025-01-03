@@ -35,8 +35,8 @@ function authenticateToken(req, res, next){
 //baza danych użytkowników
 const users = [
   {id: 1, email: 'user@email.com', password: 'user1', name:"username1", city:"Gdynia", favGenre: "Rock", instrument: "Gitara", info: "Jestem fanem dobrego rocka."},
-  {id: 2, email: 'user2@email.com', password: 'user2'},
-  {id: 3, email: 'user3@email.com', password: 'user3'},
+  {id: 2, email: 'user2@email.com', password: 'user2', name:"username2", city:"Gdańsk", favGenre: "Rap", instrument: "Wokal", info: "Luię śpiewać"},
+  {id: 3, email: 'user3@email.com', password: 'user3', name: "username3", city:"Sopot", favGenre: "Muyka klasyczna", instrument: "Pianino", info: "Lubię muzykę klasyczną"},
 ]
 
 const posts = [
@@ -92,6 +92,7 @@ app.get('/api/user/info', authenticateToken, (req, res) => {
     return res.status(200).json({userData})
   }
 })
+//UPDATE USER PROFILE
 //update user name
 app.put('/api/user/name', authenticateToken, (req, res) => {
   const userID = req.user.id
@@ -182,7 +183,28 @@ app.put('/api/user/password', authenticateToken, (req, res) => {
   res.status(400).json({message: "Nie podano parametru"})
 })
 
+//geting other users info endpoint
+app.get('/api/users/info', (req, res) => {
+  const {expression} = req.query
+  //console.log(expression);
 
+  //searching people usernames by expression
+  const matchingUsers = users.filter(user => user.name.includes(expression))
+
+  if(matchingUsers.length > 0){
+    //selecting only info we want
+    const usersInfo = matchingUsers.map(user => ({
+      id: user.id,
+      name: user.name,
+      city: user.city,
+      favGenre: user.favGenre,
+      instrument: user.instrument,
+      info: user.info
+    }))
+    return res.status(200).json({usersInfo})
+  }
+  res.status(404).json({message: "Nie znaleziono użytkownika"})
+})
 
 
 //add post endpoint

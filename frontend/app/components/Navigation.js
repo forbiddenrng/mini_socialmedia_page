@@ -4,6 +4,7 @@ import { CiMail } from "react-icons/ci";
 import { CiChat1 } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { MdLogout } from "react-icons/md";
+import { BsPeopleFill } from "react-icons/bs";
 
 export default function Navigation(){
   const logout = async () => {
@@ -27,6 +28,7 @@ export default function Navigation(){
         <li><CiMail/><Link href="/posts">Posty</Link></li>
         <li><CiChat1/><Link href="/chat">Czat</Link></li>
         <li><CgProfile/><Link href="/profile">Profil</Link></li>
+        <li><BsPeopleFill/><Link href="/community">Społeczność</Link></li>
       </ul>
       <button className="logout_btn" onClick={logout}><MdLogout /> <span>Wyloguj</span></button>
     </nav>
