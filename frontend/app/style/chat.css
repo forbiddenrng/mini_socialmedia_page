@@ -1,0 +1,86 @@
+.chat_header {
+  margin: 30px;
+}
+
+.chat_select{
+  margin: 0 30px;
+}
+
+.chat_select .chat_info {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+.chat_info p {
+  font-size: 1.3rem;
+}
+
+.chat_info button{
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: var(--nav-background);
+  border: none;
+  cursor: pointer;
+  color: #eee;
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+
+.single_chat h3{
+  text-align: center;
+  margin: 30px;
+}
+
+.single_chat .chat_wrapper{
+  box-shadow: 0 0 5px 0 #333;
+  width: 70%;
+  margin: 30px auto;
+}
+
+.chat_wrapper .messages{
+  height: 500px;
+}
+
+.chat_wrapper .chat_form{
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid #333;
+}
+
+.chat_form input{
+  padding: 5px 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid gray;
+}
+.chat_form button{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.messages{
+  padding: 10px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+.chat_message{
+  margin-top: 5px;
+}
+.chat_message.own_message{
+  align-self: flex-end;
+}
+.messages .message_info{
+  font-size: 0.8rem;
+}
+.message_info span{
+  margin-right: 5px;
+}
+.message_content{
+  background-color: lightgrey;
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 3px;
+}

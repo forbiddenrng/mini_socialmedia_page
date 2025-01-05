@@ -18,13 +18,24 @@ io.on('connection', (socket) => {
 
   let roomID = null
 
+
   socket.on('joinRoom', ({room}) => {
     //console.log("Połączono użytkownika");
     //console.log(room);
     socket.join(room)
     roomID = room
   })
-  socket.on('sendMessage', ({room, message}) => {
-    socket.broadcast.to(roomID).emit('receiveMessage', {message})
+  socket.on('sendMessage', ({room, message, username}) => {
+    console.log(room, message, username);
+    const now = new Date()
+    const day = now.getDate() < 10 ? `0${now.getDate()}` : now.getDate()
+    const month = now.getMonth() < 10 ? `0${now.getMonth()+1}` : now.getMonth()+1
+
+    const hours = now.getHours() < 10 ? `0${now.getHours()}` : now.getHours()
+    const minutes = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
+
+    const messageDate = `${day}-${month}-${now.getFullYear()} ${hours}:${minutes}`
+
+    io.to(roomID).emit('receiveMessage', {message, username, date: messageDate})
   })
 })

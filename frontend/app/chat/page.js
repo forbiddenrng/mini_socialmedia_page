@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 
+import "../style/chat.css"
 export default function Chat() {
 
   const chatData = [
@@ -23,7 +24,7 @@ function ChatSelect({id, theme}){
   return(
     <div className="chat_info">
       <p>{theme}</p>
-      <button onClick={() => router.push(`/chat/${id}`)}>Dołącz do czatu</button>
+      <button onClick={() => router.push(`/chat/${id}`)}>Dołącz</button>
     </div>
   )
 }
