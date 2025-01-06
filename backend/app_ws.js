@@ -56,6 +56,7 @@ io.on('connection', (socket) => {
   })
   socket.on('castVote', ({token, vote}) => {
     //console.log(`Głosowanie na artystę o id: ${vote}`);
+
     try{
       const decoded = jwt.verify(token, JWT_SECRET)
       const userId = decoded.id
@@ -63,7 +64,7 @@ io.on('connection', (socket) => {
         const targetArtist = voteResults.find(artist => artist.artistID === vote)
         targetArtist.totalVotes += 1;
         votedUsers.add(userId)
-        socket.emit('receiveVotingResults', {votingResults: voteResults})
+        io.emit('receiveVotingResults', {votingResults: voteResults})
 
       } else{
         socket.emit('voteError', {message: "Można głosować tylko raz"})

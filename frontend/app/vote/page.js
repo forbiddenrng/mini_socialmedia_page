@@ -1,6 +1,10 @@
 "use client"
 import { useEffect, useState } from "react"
 import { io } from "socket.io-client"
+
+import "../style/vote.css"
+import { ResponsiveContainer, Tooltip, PieChart, Pie } from "recharts"
+
 export default function VotePage(){
 
   const [socket, setSocket] = useState(null)
@@ -38,10 +42,24 @@ export default function VotePage(){
 
   return(
     <div>
-      <h1>Głosuj na artystę dnia</h1>
+      <h1 className="vote_header">Głosuj na artystę dnia</h1>
       <div className="voting_results">
-        <VoteResults votes={voteResults}/>
+        {/* <VoteResults votes={voteResults}/> */}
+        <h3>Wyniki głosowania</h3>
+        <ResponsiveContainer width="100%" minHeight={300}>
+          <PieChart>
+            <Tooltip
+              formatter={value => `${value} głosów`}
+            />
+            <Pie data={voteResults} 
+            dataKey="totalVotes" 
+            label={artist => artist.artistName} 
+            nameKey="artistName" 
+            fill="var(--nav-background)"/>
+          </PieChart>
+        </ResponsiveContainer>
       </div>
+      <div className="voting_form_wrapper">
       <div className="voting_form">
         {voteResults.map((artist, i) => (
           <label key={i}>
@@ -56,7 +74,8 @@ export default function VotePage(){
           </label>
         ))}
       </div>
-      <button onClick={() => castVote()}>Głosuj</button>
+      <button className="voting_button" onClick={() => castVote()}>Głosuj</button>
+      </div>
     </div>
   )
 }

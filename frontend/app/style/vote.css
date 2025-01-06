@@ -1,0 +1,35 @@
+h1.vote_header{
+  /* text-align: center; */
+  margin: 30px;
+}
+.voting_results h3{
+  text-align: center;
+}
+.voting_form{
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+}
+.voting_form_wrapper{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.voting_form label{
+  padding: 10px;
+  font-size: 1.1rem;
+}
+.voting_form label input{
+  margin-right: 5px;
+}
+button.voting_button{
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  background-color: var(--picton-blue);
+  color: #222;
+  border-radius: 5px;
+  /* margin-left: 20px; */
+}
