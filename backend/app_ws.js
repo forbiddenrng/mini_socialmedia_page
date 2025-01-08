@@ -9,7 +9,13 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-
+const charts = [
+  {id: 1, song: "Piosenka 1", artist: "Artysta 1", votes: 10},
+  {id: 2, song: "Piosenka 2", artist: "Artysta 2", votes: 20},
+  {id: 3, song: "Piosenka 3", artist: "Artysta 3", votes: 35},
+  {id: 4, song: "Piosenka 4", artist: "Artysta 4", votes: 40},
+  {id: 5, song: "Piosenka 5", artist: "Artysta 5", votes: 51},
+]
 
 const io = new Server(app.listen(5000), {
   cors:{
@@ -73,4 +79,22 @@ io.on('connection', (socket) => {
       socket.emit("voteError", {message: "Niewłaściwy token"})
     }
   })
+
+  socket.on('getCharts', () => {
+    socket.emit('updateCharts', {charts})
+  })
+
+  //update charts 
+  const intervalID = setInterval(() => {
+    //console.log("send message");
+    const randomSongIdx = Math.floor(Math.random() * charts.length)
+
+    // random new votes between 5 and 20
+    const votes = Math.floor(Math.random() * 16) + 5
+    charts[randomSongIdx].votes += votes
+
+    socket.emit("updateCharts",{charts} )
+  }, 5000)
 })
+
+

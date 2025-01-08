@@ -1,0 +1,57 @@
+.charts_container{
+  background-color: #eee;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  /* box-shadow: 0 0 3px 0 gray; */
+}
+.charts{
+  width: 60%;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.song{
+  display: flex;
+  border-bottom: 1px solid white;
+}
+.header{
+  background-color: var(--picton-blue);
+  font-weight: bold;
+  display: flex;
+  padding: 20px 0;
+}
+.header .position{
+  flex-basis: 100px;
+  text-align: center;
+}
+.header .info{
+  flex-basis: 450px;
+}
+.header .votes{
+  /* margin-left: 10px; */
+}
+.song .position{
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  background-color: var(--nav-background);
+  color: #eee;
+}
+.song .song_info{
+  margin-top: 20px;
+  flex-basis: 450px;
+  padding-left: 20px;
+}
+.song .song_info p.song_title{
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.song .song_votes{
+  display: flex;
+  align-items: center;
+}
