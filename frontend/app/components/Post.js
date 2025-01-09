@@ -26,6 +26,7 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
       })
     }).then(res => {
       if(res.ok){
+        //console.log(res.ok)
         alert("Pomyślnie usunięto post")
       }
     }).catch(e => {

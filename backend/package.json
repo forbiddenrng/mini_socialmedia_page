@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "app": "nodemon app.js",
-    "app_ws": "nodemon app_ws.js"
+    "app_ws": "nodemon app_ws.js",
+    "app_broker": "nodemon app_broker.js"
   },
   "keywords": [],
   "author": "",

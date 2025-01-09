@@ -56,6 +56,7 @@ export default function Posts() {
     }).then(res => {
       if(res.ok){
         alert("Dodano post")
+        getUserPosts()
       }
     }).catch(e => {
       alert("Nie udało się dodać posta")

@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
+const mqtt = require('mqtt');
+const MQTTClient = mqtt.connect("mqtt://localhost:1883")
 const app = express()
 const PORT = 4000
 
@@ -20,8 +21,8 @@ const JWT_SECRET = 'my-secret-key'
 function authenticateToken(req, res, next){
   //format: Bearer <token>
   const authHeader = req.headers['authorization']
-  console.log(req.headers);
-  console.log(authHeader);
+  // console.log(req.headers);
+  // console.log(authHeader);
   let token = authHeader && authHeader.split(' ')[1]
   if (token == null) return res.sendStatus(401)
 
@@ -32,6 +33,7 @@ function authenticateToken(req, res, next){
   })
 }
 
+
 //baza danych użytkowników
 const users = [
   {id: 1, email: 'user@email.com', password: 'user1', name:"username1", city:"Gdynia", favGenre: "Rock", instrument: "Gitara", info: "Jestem fanem dobrego rocka."},
@@ -39,7 +41,7 @@ const users = [
   {id: 3, email: 'user3@email.com', password: 'user3', name: "username3", city:"Sopot", favGenre: "Muyka klasyczna", instrument: "Pianino", info: "Lubię muzykę klasyczną"},
 ]
 
-const posts = [
+let posts = [
   {id: 1, title: "Tytuł posta 1", ownerId: 1, createDate: "2024-12-29", modifyDate: null, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"},
   {id: 2, title: "Tytuł posta 2", ownerId: 2, createDate: "2024-12-28", modifyDate: null, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"},
   {id: 3, title: "Tytuł posta 3", ownerId: 1, createDate: "2024-12-27", modifyDate: null, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"},
@@ -65,6 +67,7 @@ app.get('/api/post:id', (req, res) => {
     res.status(404).json({message: "Post not found"})
   }
 })
+
 
 // get logged user posts
 app.get('/api/user/posts', authenticateToken, (req, res) =>{
@@ -226,6 +229,7 @@ app.post('/api/post/add', authenticateToken, (req, res) => {
   }
 
   posts.push(newPost)
+  MQTTClient.publish('post/add', JSON.stringify(newPost))
   res.status(201).json({message: "Utworzono nowy post"})
 })
 
@@ -244,20 +248,22 @@ app.put('/api/post/edit', authenticateToken, (req, res) => {
     post.content = newContent
     post.modifyDate = new Date().toISOString().slice(0,10)
   }
+  MQTTClient.publish('post/edit', JSON.stringify({id: post.id, ownerId: post.ownerId}))
   return res.status(200).json({message: "Zmodyfikowano zawartość posta"})
 })
 
 //delete post endpoint
 app.delete('/api/post/delete', authenticateToken, (req, res) => {
   const {postId} = req.body
-  const postIdx = posts.findIndex(post => post.id === postId)
-  if(postIdx !== -1){
-    posts.splice(postIdx, 1)
-    return res.status(200).json({message: "Post usunięty pomyślnie"})
-  }else{
-    return res.status(404).json({message: "Nie znaleziono posta"})
-  }
+  //const postIdx = posts.findIndex(post => post.id === postId)
+  const {id, ownerId} = posts.find(post => post.id === postId)
+  posts = posts.filter(post => post.id !== postId)
+  MQTTClient.publish('post/delete', JSON.stringify({id, ownerId}))
+  return res.status(200).json({message: "Post usunięty pomyślnie"})
+ 
 })
+
+
 
 
 //login endpoint
