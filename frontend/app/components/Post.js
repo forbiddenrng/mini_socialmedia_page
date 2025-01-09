@@ -4,13 +4,25 @@ import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
+import mqtt from "mqtt"
+
 export default function Post({title, createDate, modifyDate, content, ownerId, userPosts, id}){
   const [editMode, setEditMode] = useState(false)
   const [token, setToken] = useState()
+  
+
   //onst router = useRouter()
   useEffect(() => {
     if (typeof window !== 'undefined'){
       setToken(sessionStorage.getItem('token'))
+    }
+    const client = mqtt.connect("ws://localhost:8000/mqtt")
+    client.on('connect', () => {
+      // user read posts
+      client.publish('post/read')
+    })
+    return () => {
+      client.end()
     }
   }, [])
   const handleDeletePost = async () => {
@@ -60,6 +72,7 @@ function EditPost({title, content, changeEditMode, id}){
     if (typeof window !== 'undefined'){
       setToken(sessionStorage.getItem('token'))
     }
+
   }, [])
 
   //const token = sessionStorage.getItem('token')

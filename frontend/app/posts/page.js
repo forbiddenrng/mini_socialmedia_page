@@ -3,6 +3,8 @@ import Post from "../components/Post";
 import { useEffect, useState } from "react";
 import "../style/posts.css"
 
+// import mqtt from "mqtt"
+
 export default function Posts() {
   const [posts, setPosts] = useState([])
   const [userPosts, setUserPosts] = useState([])
@@ -32,6 +34,23 @@ export default function Posts() {
     if (typeof window !== 'undefined'){
       setToken(sessionStorage.getItem('token'))
     }
+
+    // console.log(mqtt)
+    // const client = mqtt.connect("ws://localhost:8000/mqtt")
+
+    // client.on('connect', () => {
+    //   console.log('connected to broker')
+    //   client.subscribe('post/add')
+    // })
+    // client.on('error', (err) => {
+    //   console.log('Error: ', err);
+    // })
+    // client.on('message', (topic, message) => {
+    //   console.log("dodano post");
+    // })
+    // return () => {
+    //   client.end()
+    // }
   }, [])
   useEffect(() => {
     if (token){
