@@ -29,8 +29,9 @@
 .header .info{
   flex-basis: 450px;
 }
-.header .votes{
-  /* margin-left: 10px; */
+.loading_charts{
+  text-align: center;
+  margin-top: 50px;
 }
 .song .position{
   width: 100px;

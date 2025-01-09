@@ -31,7 +31,7 @@ export default function ChartsPage(){
 
   return (
     <div>
-      {!charts.length ? <p>Loading charts</p> : <Charts charts={charts}/>}
+      {!charts.length ? <p className="loading_charts">Loading charts</p> : <Charts charts={charts}/>}
     </div>
   )
 }

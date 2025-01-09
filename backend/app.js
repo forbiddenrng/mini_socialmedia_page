@@ -104,6 +104,7 @@ app.put('/api/user/name', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newUsername){
     user.name = newUsername
+    MQTTClient.publish('user/edit/name', JSON.stringify({userID: user.id, newUsername}))
     return res.status(200).json({message: "Zaktualizowano nazwę", newContent: newUsername})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -117,6 +118,7 @@ app.put('/api/user/city', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newCity){
     user.city = newCity
+    MQTTClient.publish('user/edit/city', JSON.stringify({userID: user.id, newCity}))
     return res.status(200).json({message: "Zaktualizowano miasto", newContent: newCity})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -130,6 +132,7 @@ app.put('/api/user/genre', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newGenre){
     user.favGenre = newGenre
+    MQTTClient.publish('user/edit/genre', JSON.stringify({userID: user.id, newGenre}))
     return res.status(200).json({message: "Zaktualizowano gatunek muzyczny", newContent: newGenre})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -143,6 +146,7 @@ app.put('/api/user/instrument', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newInstrument){
     user.instrument = newInstrument
+    MQTTClient.publish('user/edit/instrument', JSON.stringify({userID: user.id, newInstrument}))
     return res.status(200).json({message: "Zaktualizowano instrument", newContent: newInstrument})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -156,6 +160,7 @@ app.put('/api/user/info', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newInfo){
     user.info = newInfo
+    MQTTClient.publish('user/edit/info', JSON.stringify({userID: user.id}))
     return res.status(200).json({message: "Zaktualizowano informacje", newContent: newInfo})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -168,7 +173,8 @@ app.put('/api/user/email', authenticateToken, (req, res) => {
 
   const user = users.find(user => user.id === userID)
   if (newEmail){
-    user.email = newEmail
+    user.email = newEmail    
+    MQTTClient.publish('user/edit/email', JSON.stringify({userID: user.id, newEmail}))
     return res.status(200).json({message: "Zaktualizowano email", newContent: newEmail})
   }
   res.status(400).json({message: "Nie podano parametru"})
@@ -181,6 +187,7 @@ app.put('/api/user/password', authenticateToken, (req, res) => {
   const user = users.find(user => user.id === userID)
   if (newPassword){
     user.password = newPassword
+    MQTTClient.publish('user/edit/password', JSON.stringify({userID: user.id}))
     return res.status(200).json({message: "Zaktualizowano hasło", newContent: newPassword})
   }
   res.status(400).json({message: "Nie podano parametru"})
