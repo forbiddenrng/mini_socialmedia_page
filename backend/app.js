@@ -289,6 +289,33 @@ app.post('/api/login', (req, res) => {
   res.json({token: token})
 })
 
+//register endpoint
+app.post('/api/register', (req, res) => {
+  const {email, password, username} = req.body
+
+  const existingUser = users.find(u => u.email === email)
+  if(existingUser){
+    return res.status(400).json({message: "User already exists"})
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    email, 
+    password, 
+    name:username, 
+    city:"", 
+    favGenre: "", 
+    instrument: "", 
+    info: ""
+  }
+  users.push(newUser);
+
+  const token = jwt.sign({id: newUser.id, email: newUser.email}, JWT_SECRET)
+  
+  res.cookie('token', token, {httpOnly: true, secure: false})
+  res.status(201).json({token: token})
+})
+
 
 //endpoint do spawdzania sesji 
 app.get('/api/session', (req,res) => {

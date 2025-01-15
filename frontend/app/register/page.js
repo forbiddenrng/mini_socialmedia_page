@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MdOutlineEmail } from "react-icons/md";
 import { IoLockClosedOutline } from "react-icons/io5";
+import { FaRegUser } from "react-icons/fa";
 
 import '../globals.css'
 import '../style/login.css'
 
 export default function Register() {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [displayError, setDisplayError] = useState(false)
@@ -17,27 +19,32 @@ export default function Register() {
 
   const handleSubmit = async (e) =>{
     e.preventDefault()
-    if(email === "" || password===""){
+    if(email === "" || password==="" || username === ""){
       setDisplayError(true)
       return 
     }
     let responseOk = false
-    const response = await fetch('http://localhost:4000/api/login', {
+    const response = await fetch('http://localhost:4000/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({email, password}),
+      body: JSON.stringify({email, password, username}),
       credentials: "include"
     }).then(res => {
       responseOk = res.ok
-      return res.json()
-    }).then(res => {
+      if (res.ok) return res.json()
+    })
+    .then(res => {
+      if (res.status === 400) {
+      setDisplayError(true);
+      throw new Error('Bad Request');
+      }
       sessionStorage.setItem('token', res.token)
+    }).catch(e => {
+      alert("Konto z takim adresem email już istenieje")
     })
 
     if(responseOk){
       router.push('/home')
-    }else{
-      alert("Niepoprawne logowanie")
     }
   }
   const handleSignIn = () => {
@@ -63,6 +70,18 @@ export default function Register() {
         />
       </label>
       </div>
+      <div className='username'>
+      <label>
+      <FaRegUser className='form_icon'/>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder='Nazwa użytkownika'
+        />
+      </label>
+      </div>
+
       <div className='password'>
       <label>
         <IoLockClosedOutline className='form_icon'/>
@@ -79,7 +98,7 @@ export default function Register() {
       <div className='sign_up'>
         <span onClick={() => handleSignIn()}>Sign in</span>
       </div>
-      {displayError && <span className='form_error'>Email ani hasło nie mogą być puste</span>}
+      {displayError && <span className='form_error'>Email, nazwa i hasło są wymagane</span>}
       </div>
     </div>
   );
