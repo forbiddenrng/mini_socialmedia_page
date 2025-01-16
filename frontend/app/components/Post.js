@@ -6,24 +6,25 @@ import { MdEdit } from "react-icons/md";
 
 import mqtt from "mqtt"
 
-export default function Post({title, createDate, modifyDate, content, ownerId, userPosts, id}){
+export default function Post({title, createDate, modifyDate, content, ownerId, userPosts, _id}){
   const [editMode, setEditMode] = useState(false)
   const [token, setToken] = useState()
   
-
+  //console.log(ownerId);
+  //console.log(userPosts);
   //onst router = useRouter()
   useEffect(() => {
     if (typeof window !== 'undefined'){
       setToken(sessionStorage.getItem('token'))
     }
-    const client = mqtt.connect("ws://localhost:8000/mqtt")
-    client.on('connect', () => {
-      // user read posts
-      client.publish('post/read')
-    })
-    return () => {
-      client.end()
-    }
+    // const client = mqtt.connect("ws://localhost:8000/mqtt")
+    // client.on('connect', () => {
+    //   // user read posts
+    //   client.publish('post/read')
+    // })
+    // return () => {
+    //   client.end()
+    // }
   }, [])
   const handleDeletePost = async () => {
     const request = await fetch('http://localhost:4000/api/post/delete', {
@@ -34,7 +35,7 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
       },
       credentials: "include",
       body: JSON.stringify({
-        postId: id,
+        postId: _id,
       })
     }).then(res => {
       if(res.ok){
@@ -56,9 +57,9 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
       <span>Post użytkownika: {ownerId}</span>
       {modifyDate === null ? <span>{createDate}</span> : <span>Edytowano {modifyDate}</span>}
       <p>{content}</p>
-      {userPosts.includes(ownerId) && <button onClick={() => handleDeletePost()}><MdDelete/></button>}
-      {userPosts.includes(ownerId) && <button onClick={() => handleEditPost()}><MdEdit/></button>}
-      {editMode && <EditPost title={title} content={content} changeEditMode={setEditMode} id={id}/>}
+      {userPosts.includes(_id) && <button onClick={() => handleDeletePost()}><MdDelete/></button>}
+      {userPosts.includes(_id) && <button onClick={() => handleEditPost()}><MdEdit/></button>}
+      {editMode && <EditPost title={title} content={content} changeEditMode={setEditMode} id={_id}/>}
     </div>
   )
 }

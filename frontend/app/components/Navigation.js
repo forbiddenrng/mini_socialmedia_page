@@ -30,22 +30,22 @@ export default function Navigation(){
   }
     useEffect(() => {
     // console.log(mqtt)
-    const client = mqtt.connect("ws://localhost:8000/mqtt")
+    // const client = mqtt.connect("ws://localhost:8000/mqtt")
 
-    client.on('connect', () => {
+    // client.on('connect', () => {
       
-      client.subscribe('post/add')
-    })
-    client.on('message', (topic, message) => {
-      if(topic === 'post/add'){
-        setNewPosts(true)
-      } else if(topic === 'post/read'){
-        setNewPosts(false)
-      }
-    })
-    return () => {
-      client.end()
-    }
+    //   client.subscribe('post/add')
+    // })
+    // client.on('message', (topic, message) => {
+    //   if(topic === 'post/add'){
+    //     setNewPosts(true)
+    //   } else if(topic === 'post/read'){
+    //     setNewPosts(false)
+    //   }
+    // })
+    // return () => {
+    //   client.end()
+    // }
   }, [])
 
   return(

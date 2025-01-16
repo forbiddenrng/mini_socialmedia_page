@@ -88,7 +88,9 @@ export default function Posts() {
 
   // const posts = getPosts()
   // const userPosts = getUserPosts()
-  //console.log(userPosts);
+  // console.log(userPosts);
+  // console.log(posts);
+  // console.log(posts);
   return (
     <div>
     <div className="add_post">
@@ -99,7 +101,7 @@ export default function Posts() {
     <h1>Posty użytkowników</h1>
     <div className="posts_container">
      {posts.map(post => (
-      <Post key={post.id} 
+      <Post key={post._id} 
       // title={post.title}
       // createDate={post.createDate}
       // modifyDate={post.modifyDate}
