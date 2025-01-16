@@ -10,12 +10,14 @@ const MQTTClient = mqtt.connect("mqtt://localhost:1883")
 const app = express()
 const PORT = 4000
 
+require("dotenv").config()
+
 // MONGO DB
 const mongoose = require("mongoose")
 const User = require("./models/users")
 const Post = require("./models/posts")
 
-mongoose.connect('mongodb://127.0.0.1:27017/portal', {useNewUrlParser: true})
+mongoose.connect(`${process.env.DATABASE_URL}`, {useNewUrlParser: true})
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log("Connected to database"))
@@ -30,7 +32,7 @@ app.use(cors({
 }));
 
 
-const JWT_SECRET = 'my-secret-key'
+const JWT_SECRET = process.env.JWT_SECRET
 
 function authenticateToken(req, res, next){
   //format: Bearer <token>

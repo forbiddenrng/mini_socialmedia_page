@@ -10,23 +10,23 @@ export default function ChartsPage(){
   const [charts, setCharts] = useState([])
 
   useEffect(() => {
-    // const newSocket = io("http://localhost:5000")
-    // setSocket(newSocket)
+    const newSocket = io("http://localhost:5000")
+    setSocket(newSocket)
 
-    // newSocket.on('updateCharts', ({charts}) => {
-    //   //console.log('receive');
-    //   setCharts(charts)
-    // })
+    newSocket.on('updateCharts', ({charts}) => {
+      //console.log('receive');
+      setCharts(charts)
+    })
 
-    // return () => {
-    //   newSocket.disconnect()
-    // }
+    return () => {
+      newSocket.disconnect()
+    }
   }, [])
 
   useEffect(() => {
-    // if(socket){
-    //   socket.emit('getCharts')
-    // }
+    if(socket){
+      socket.emit('getCharts')
+    }
   }, [socket])
 
   return (

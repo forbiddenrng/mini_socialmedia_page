@@ -17,14 +17,14 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
     if (typeof window !== 'undefined'){
       setToken(sessionStorage.getItem('token'))
     }
-    // const client = mqtt.connect("ws://localhost:8000/mqtt")
-    // client.on('connect', () => {
-    //   // user read posts
-    //   client.publish('post/read')
-    // })
-    // return () => {
-    //   client.end()
-    // }
+    const client = mqtt.connect("ws://localhost:8000/mqtt")
+    client.on('connect', () => {
+      // user read posts
+      client.publish('post/read')
+    })
+    return () => {
+      client.end()
+    }
   }, [])
   const handleDeletePost = async () => {
     const request = await fetch('http://localhost:4000/api/post/delete', {

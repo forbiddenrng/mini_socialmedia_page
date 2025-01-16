@@ -1,9 +1,10 @@
 const express = require('express');
 const {Server} = require('socket.io');
 const cors = require('cors')
+require("dotenv").config()
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = 'my-secret-key' 
+const JWT_SECRET = process.env.JWT_SECRET
 
 const app = express()
 app.use(cors())

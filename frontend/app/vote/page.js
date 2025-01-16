@@ -23,21 +23,21 @@ export default function VotePage(){
 
   useEffect(() => {
     setToken(sessionStorage.getItem('token'))
-    // const newSocket = io('http://localhost:5000')
-    // setSocket(newSocket)
+    const newSocket = io('http://localhost:5000')
+    setSocket(newSocket)
 
-    // newSocket.emit('getVotingResults')
+    newSocket.emit('getVotingResults')
 
-    // newSocket.on('receiveVotingResults', ({votingResults}) => {
-    //   //console.log("Received voting results");
-    //   setVoteResuls(votingResults)
-    // })
-    // newSocket.on("voteError", ({message}) => {
-    //   alert(message)
-    // })
-    // return () => {
-    //   newSocket.disconnect()
-    // }
+    newSocket.on('receiveVotingResults', ({votingResults}) => {
+      //console.log("Received voting results");
+      setVoteResuls(votingResults)
+    })
+    newSocket.on("voteError", ({message}) => {
+      alert(message)
+    })
+    return () => {
+      newSocket.disconnect()
+    }
   }, [])
 
   return(
