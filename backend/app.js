@@ -400,6 +400,24 @@ app.delete('/api/post/delete', authenticateToken, async (req, res) => {
  
 })
 
+//delete account endpoint
+app.delete('/api/user/delete', authenticateToken, async (req, res) => {
+  const userID = req.user.id
+  console.log(userID)
+  try{
+    const user = await User.findByIdAndDelete(userID)
+    if(!user){
+      return res.status(400).json({message: "Użytkownik nieznaleziony"})
+    } 
+
+    await Post.deleteMany({ownerId: userID})
+
+    res.clearCookie('token')
+    res.json({message: "Logout successful"})
+  } catch(err){
+    return res.status(500).json({message: err.message})
+  }
+})
 
 
 
@@ -460,22 +478,6 @@ app.post('/api/register', async (req, res) => {
     return res.status(500).json({message: error.message})
   }
 
-  // const newUser = {
-  //   id: v4(),
-  //   email, 
-  //   password, 
-  //   name:username, 
-  //   city:"", 
-  //   favGenre: "", 
-  //   instrument: "", 
-  //   info: ""
-  // }
-  // users.push(newUser);
-
-  // const token = jwt.sign({id: newUser.id, email: newUser.email}, JWT_SECRET)
-  
-  // res.cookie('token', token, {httpOnly: true, secure: false})
-  // res.status(201).json({token: token})
 })
 
 

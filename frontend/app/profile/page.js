@@ -6,6 +6,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import { BiShow, BiHide } from "react-icons/bi";
 import { useState, useEffect } from "react";
+import DeleteAccount from "../components/DeleteAccount";
 
 
 export default function Profile() {
@@ -327,6 +328,7 @@ function UserSettings(){
 
   const getPassword = () => passwordVisible ? password : "*".repeat(password.length)
   return(
+    <>
     <div className="user_info">
       <h3>Ustawienia konta</h3>
       <div className="info_box">
@@ -361,7 +363,8 @@ function UserSettings(){
           }
         </div>
       </div>
-      
     </div>
+    <DeleteAccount/>
+    </>
   )
 }
