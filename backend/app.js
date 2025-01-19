@@ -16,6 +16,7 @@ require("dotenv").config()
 const mongoose = require("mongoose")
 const User = require("./models/users")
 const Post = require("./models/posts")
+const Comment = require("./models/comments")
 
 mongoose.connect(`${process.env.DATABASE_URL}`, {useNewUrlParser: true})
 const db = mongoose.connection
@@ -327,19 +328,7 @@ app.post('/api/post/add', authenticateToken, async (req, res) => {
   } catch (err){
     return res.status(500).json({message: err.message})
   }
-  
-  // const newPost = {
-  //   id: v4(),
-  //   title: title,
-  //   createDate: new Date().toISOString().slice(0,10),
-  //   modifyDate: null,
-  //   ownerId: req.user.id,
-  //   content: content,
-  // }
 
-  // posts.push(newPost)
-  // MQTTClient.publish('post/add', JSON.stringify(newPost))
-  // res.status(201).json({message: "Utworzono nowy post"})
 })
 
 //edit post endpoint
@@ -370,13 +359,7 @@ app.put('/api/post/edit', authenticateToken, async (req, res) => {
     console.log("Bład")
     return res.status(500).json({message: err.message})
   }
-  // if(post){
-  //   post.title = newTitle
-  //   post.content = newContent
-  //   post.modifyDate = new Date().toISOString().slice(0,10)
-  // }
-  // MQTTClient.publish('post/edit', JSON.stringify({id: post.id, ownerId: post.ownerId}))
-  // return res.status(200).json({message: "Zmodyfikowano zawartość posta"})
+
 })
 
 //delete post endpoint
@@ -392,13 +375,90 @@ app.delete('/api/post/delete', authenticateToken, async (req, res) => {
   } catch (err){
     return res.status(500).json({message: err.message})
   }
-  //const postIdx = posts.findIndex(post => post.id === postId)
-  // const {id, ownerId} = posts.find(post => post.id === postId)
-  // posts = posts.filter(post => post.id !== postId)
-  // MQTTClient.publish('post/delete', JSON.stringify({id, ownerId}))
-  // return res.status(200).json({message: "Post usunięty pomyślnie"})
- 
 })
+//get comments with post id
+app.get('/api/comments/:id', authenticateToken, async (req, res) => {
+  const postId = req.params.id
+  try {
+    const comments = await Comment.find({postId: postId})
+
+    const commentsWithUsernames = await Promise.all(comments.map(async (comment) => {
+      const user = await User.findById(comment.ownerId)
+      return {
+        ...comment, 
+        ownerName: user ? user.name : "Usunięty użytkownik"
+      }
+    }))
+
+    return res.status(200).json({comments: commentsWithUsernames})
+  } catch (err){
+    return res.status(500).json({message: err.message})
+  }
+})
+//get user comments with postid
+app.get('/api/comments/:id/user', authenticateToken, async (req, res) => {
+  const userID = req.user.id
+  const postID = req.params.id 
+
+  try{
+    const userComments = await Comment.find({postId: postID, ownerId: userID})
+    if(userComments){
+      return res.status(200).json({userComments})
+    }
+  } catch (err){
+    return res.status(500).json({message: err.message})
+  }
+})
+
+//add comment endpoint
+app.post('/api/comments/add', authenticateToken, async (req, res) => {
+  const {postId, content} = req.body
+  const userId = req.user.id
+
+  try{
+    const newComment = new Comment({
+      postId: postId,
+      ownerId: userId,
+      content: content,
+      createDate: new Date().toISOString().slice(0,10),
+      editDate: null
+    })
+    const savedComment = await newComment.save()
+    return res.status(201).json({savedComment})
+  } catch (err){
+    return res.status(500).json({message: err.message})
+  }
+})
+
+//edit comment endpoint
+app.put('/api/comments/edit', authenticateToken, async (req, res) => {
+  const {commentId, newContent} = req.body 
+  try {
+    const updatedComment = await Comment.findByIdAndUpdate(commentId, {
+      content: newContent,
+      editDate: new Date().toISOString().slice(0,10)
+    }, {new: true})
+    
+    return res.sendStatus(204)
+    
+  } catch (err){
+    return res.status(500).json({message: err.message})
+  }
+})
+
+//delete comment endpoint
+app.delete('/api/comments/delete', authenticateToken, async (req, res) => {
+  const {commentId} = req.body
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(commentId)
+    if(deletedComment){
+      return res.status(204)
+    }
+  } catch (err){
+    return res.status(500).json({message: err.messagae})
+  }
+})
+
 
 //delete account endpoint
 app.delete('/api/user/delete', authenticateToken, async (req, res) => {
