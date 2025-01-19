@@ -1,0 +1,35 @@
+.comment_section .comment_form {
+  display: flex;
+  align-items: flex-end;
+  margin-top: 5px;
+}
+.comment_section .comment_form input{
+  padding: 10px 10px 30px 10px;
+  outline: none;
+  border-radius: 10px;
+  border: 2px solid var(--nav-background);
+  margin-right: 5px;
+}
+.comments_container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.comment{
+  background-color: #eee;
+  padding: 10px 15px;
+  border-radius: 10px;
+  align-self: flex-start;
+}
+.comment .comment_author{
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.comments_container .comment .comment_buttons button{
+  font-size: 0.8rem;
+}
+.comments_container .comment .comment_edit button{
+  font-size: 1rem;
+  margin-left: 5px;
+}

@@ -63,3 +63,9 @@ h1{
   outline: none;
   padding: 5px;
 }
+.posts_container .post .comments_button{
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  gap: 5px;
+}

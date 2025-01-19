@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import { FaCommentAlt } from "react-icons/fa";
 
 import mqtt from "mqtt"
+import CommentSection from "./CommentSection";
 
 export default function Post({title, createDate, modifyDate, content, ownerId, userPosts, _id}){
   const [editMode, setEditMode] = useState(false)
   const [token, setToken] = useState()
+  const [commentSection, setCommentSection] = useState(false)
   
   //console.log(ownerId);
   //console.log(userPosts);
@@ -57,9 +60,11 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
       <span>Post użytkownika: {ownerId}</span>
       {modifyDate === null ? <span>{createDate}</span> : <span>Edytowano {modifyDate}</span>}
       <p>{content}</p>
+      <button className="comments_button" onClick={() => setCommentSection(!commentSection)}><FaCommentAlt/>Komentarze</button>
       {userPosts.includes(_id) && <button onClick={() => handleDeletePost()}><MdDelete/></button>}
       {userPosts.includes(_id) && <button onClick={() => handleEditPost()}><MdEdit/></button>}
       {editMode && <EditPost title={title} content={content} changeEditMode={setEditMode} id={_id}/>}
+      {commentSection && <CommentSection id={_id} />}
     </div>
   )
 }
