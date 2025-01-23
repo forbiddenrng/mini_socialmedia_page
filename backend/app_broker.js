@@ -16,7 +16,7 @@ const topic = [
 ]
 
 const logToFile = (message) => {
-  fs.appendFile('log.txt', `message\n`, (err) => {
+  fs.appendFile('log.txt', `${message}\n`, (err) => {
     if (err){
       console.log("Błąd podczas zapisywania logów");
     }

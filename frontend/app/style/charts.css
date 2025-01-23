@@ -27,7 +27,7 @@
   text-align: center;
 }
 .header .info{
-  flex-basis: 450px;
+  flex-basis: 550px;
 }
 .loading_charts{
   text-align: center;
@@ -45,7 +45,7 @@
 }
 .song .song_info{
   margin-top: 20px;
-  flex-basis: 450px;
+  flex-basis: 550px;
   padding-left: 20px;
 }
 .song .song_info p.song_title{

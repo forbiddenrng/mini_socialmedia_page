@@ -4,7 +4,7 @@ export default function Home() {
   
   return (
     <div>
-     Home Page
+     <h1 className='home_header'><span className='jam'>Jam</span><span className='space'>Space</span></h1>
      
     </div>
   );

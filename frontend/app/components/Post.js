@@ -57,7 +57,7 @@ export default function Post({title, createDate, modifyDate, content, ownerId, u
   return(
     <div className="post">
       <h3>{title}</h3>
-      <span>Post użytkownika: {ownerId}</span>
+      {/* <span>Post użytkownika: {ownerId}</span> */}
       {modifyDate === null ? <span>{createDate}</span> : <span>Edytowano {modifyDate}</span>}
       <p>{content}</p>
       <button className="comments_button" onClick={() => setCommentSection(!commentSection)}><FaCommentAlt/>Komentarze</button>

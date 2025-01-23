@@ -33,6 +33,7 @@ app.use(cors({
 }));
 
 
+let loggedUsers = []
 const JWT_SECRET = process.env.JWT_SECRET
 
 function authenticateToken(req, res, next){
@@ -471,7 +472,9 @@ app.delete('/api/user/delete', authenticateToken, async (req, res) => {
     } 
 
     await Post.deleteMany({ownerId: userID})
-
+    
+    MQTTClient.publish("user/offline", JSON.stringify({id: userID}))
+    loggedUsers = loggedUsers.filter(user => user.id !== userID )
     res.clearCookie('token')
     res.json({message: "Logout successful"})
   } catch(err){
@@ -496,6 +499,10 @@ app.post('/api/login', async (req, res) => {
     if(user){
       const token = jwt.sign({id: user._id, email: user.email}, JWT_SECRET)
 
+      const stringId = user._id.toString()
+
+      MQTTClient.publish("user/online", JSON.stringify({id: stringId, name: user.name}))
+      loggedUsers.push({id: stringId, name: user.name})
       res.cookie('token', token, {httpOnly: true, secure: false})
     
       res.json({token: token})
@@ -511,6 +518,12 @@ app.post('/api/login', async (req, res) => {
 
   // res.json({token: token})
 })
+
+// get logged users endpoint 
+app.get('/api/users/logged', (req, res) => {
+  res.status(200).json({loggedUsers})
+})
+
 
 //register endpoint
 app.post('/api/register', async (req, res) => {
@@ -531,7 +544,11 @@ app.post('/api/register', async (req, res) => {
     const savedUser = await newUser.save()
 
     const token = jwt.sign({id: savedUser._id, email: savedUser.email}, JWT_SECRET)
-  
+    
+    const stringId = savedUser._id.toString()
+    MQTTClient.publish("user/online", JSON.stringify({id: stringId, name: savedUser.name}))
+    loggedUsers.push({id: stringId, name: savedUser.name})
+
     res.cookie('token', token, {httpOnly: true, secure: false})
     res.status(201).json({token: token})
   } catch (error){
@@ -558,7 +575,11 @@ app.get('/api/session', (req,res) => {
 
 
 //logout endpoint
-app.post('/api/logout', (req, res) => {
+app.post('/api/logout', authenticateToken, (req, res) => {
+  const userId = req.user.id
+  MQTTClient.publish("user/offline", JSON.stringify({id: userId}))
+  loggedUsers = loggedUsers.filter(user => user.id !== userId)
+
   res.clearCookie('token')
   res.json({message: "Logout successful"})
 })

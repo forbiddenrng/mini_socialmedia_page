@@ -86,6 +86,79 @@ body {
   animation: ring 4s .7s ease-in-out infinite;
 }
 
+.home_header{
+  margin: 30px;
+  text-align: center;
+  font-size: 2.5rem;
+}
+.jam {
+  color: var(--picton-blue); 
+}
+.space {
+  color: var(--nav-background); 
+}
+
+
+.logged_users_section {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; 
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+
+.logged_users_section h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.logged_users {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+}
+
+
+.logged_users > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  background-color: #fff; 
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s; 
+}
+
+
+.logged_users > div:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.logged_users > div span:first-child {
+  font-size: 1rem;
+  color: #555;
+}
+
+
+.logged_icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4caf50; 
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.6); 
+}
+
+
+
 @keyframes ring {
   0% { transform: rotate(0); }
   1% { transform: rotate(30deg); }

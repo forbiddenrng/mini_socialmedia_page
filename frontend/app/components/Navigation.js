@@ -14,10 +14,22 @@ import { useEffect, useState } from "react";
 export default function Navigation(){
   const [newPosts, setNewPosts] = useState(false) 
 
+  const [token, setToken] = useState(null)
+
+  useEffect(() => {
+    if(typeof window !== undefined){
+      setToken(sessionStorage.getItem('token'))
+    }
+  }, [])
+
   const logout = async () => {
     const response = await fetch('http://localhost:4000/api/logout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      
+      },
       credentials: "include"
     })
     if(response.ok){
@@ -50,7 +62,7 @@ export default function Navigation(){
 
   return(
     <nav>
-      <p>Portal Muzyczny</p>
+      <p>JamSpace</p>
       <ul>
         <li><CiMail/><Link href="/posts">Posty</Link>{newPosts && <span className="new_posts"><FaBell/></span>}</li>
         <li><CiChat1/><Link href="/chat">Czat</Link></li>
